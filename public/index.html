@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PiGen</title>
+</head>
+<body>
+    <h1>Generate a Proxy</h1>
+    <button id="generateLinkButton">Generate Proxy</button>
+    <p id="linkDisplay"></p>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #33ff33; /* Classic green terminal color */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            color: #33ff33;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        button {
+            background-color: #222;
+            color: #33ff33;
+            border: 1px solid #33ff33;
+            border-radius: 5px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 200px; /* Fixed width for a more terminal-like button */
+            transition: all 0.2s ease;
+            margin-bottom: 20px; /* Space between button and link display */
+        }
+
+        button:hover {
+            background-color: #33ff33;
+            color: #111;
+            border-color: #33cc33;
+            transform: scale(1.1);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        p {
+            margin-top: 10px; /* Space above the message */
+            font-size: 16px;
+            color: #33ff33;
+            line-height: 1.5;
+            white-space: pre-wrap; /* Allows for line breaks */
+            text-align: center; /* Center the text */
+        }
+
+        a {
+            color: #33ff33;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #00cc00;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 14px;
+                width: 100%; /* Full width on smaller screens */
+            }
+
+            p {
+                font-size: 14px;
+            }
+        }
+    </style>
+
+    <script>
+        document.getElementById('generateLinkButton').addEventListener('click', function() {
+            fetch('/generate-link')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const linkElement = document.createElement('a');
+                        linkElement.href = data.link;
+                        linkElement.textContent = data.link; // Display the link text
+                        linkElement.target = "_blank"; // Open in a new tab
+
+                        // Set the content to display the message and the link
+                        document.getElementById('linkDisplay').innerHTML = `Here's your link! Enjoy:\n`;
+                        document.getElementById('linkDisplay').appendChild(linkElement);
+                    } else {
+                        const errorMessage = data.error || "An unknown error occurred";
+                        document.getElementById('linkDisplay').textContent = `Error: ${errorMessage}`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('linkDisplay').textContent = `Request failed: ${error.message || error}`;
+                });
+        });
+    </script>
+</body>
+</html>

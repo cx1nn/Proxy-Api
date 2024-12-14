@@ -1,0 +1,17 @@
+{
+    "name": "Proxy API",
+    "version": "1.0.0",
+    "description": "API to create a proxy on start.",
+    "type": "module",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "keywords": [],
+    "author": "Cxin",
+    "license": "nonee",
+    "dependencies": {
+        "express": "^4.18.3",
+        "vercel": "^39.0.2"
+    }
+}
